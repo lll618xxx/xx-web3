@@ -1,32 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import { ethers } from "ethers";
+import './App.scss'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [walletProvider, setWalletProvider] = useState<any>(null);
+  const [networkName, setNetworkName] = useState<string>("");
+  const [balance, setBalance] = useState<string>("");
+  const [account, setAccount] = useState<string>("");
+
+  const connectWallet = async () => {
+    try {
+      if (!ethereum) return alert("Please install MetaMask.");
+
+      // const accounts = await ethereum.request({ method: "eth_requestAccounts", });
+      // console.log(accounts, 'accounts')
+      // // setCurrentAccount(accounts[0]);
+        console.log(walletProvider, 'walletProvider22222')
+      // // window.location.reload();
+      const accounts = await walletProvider.send("eth_requestAccounts", []);
+      setAccount(accounts[0]);
+      getAccountMsg()
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const checkIfWalletIsConnect = async () => {
+    try {
+      if (!ethereum) return alert("Please install MetaMask.");
+      console.log(walletProvider, 'walletProvider222')
+      // const accounts = await ethereum.request({ method: "eth_accounts" });
+      const accounts = await walletProvider.send("eth_accounts", []);
+
+      if (accounts.length) {
+        setAccount(accounts[0]);
+        getAccountMsg()
+      } else {
+        console.log("No accounts found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAccountMsg = async () => {
+    const network = await walletProvider.getNetwork();
+    const balance = await walletProvider.getBalance(account);
+    setNetworkName(network.name);
+    setBalance(ethers.utils.formatEther(balance));
+  }
+
+  
+  useEffect(() => {
+    if (!window.ethereum) {
+      return;
+    }
+    setWalletProvider(
+      new ethers.providers.Web3Provider(window.ethereum as any)
+    );
+
+  }, []);
+
+   useEffect(() => {
+     if (walletProvider) {
+        checkIfWalletIsConnect()
+     }
+  }, [walletProvider]);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <button className="connet-btn" onClick={connectWallet}>Connet Wallet</button>
+
+      <div className='card'>
+        <div>networkName: {networkName}</div>
+        <div>balance: {balance}</div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }
