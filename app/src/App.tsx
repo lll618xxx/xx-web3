@@ -7,7 +7,7 @@ declare var window: any
 function App() {
   const [walletProvider, setWalletProvider] = useState<any>(null);
   const [networkName, setNetworkName] = useState<string>("");
-  const [balance, setBalance] = useState<number>(0);
+  const [balance, setBalance] = useState<string>();
   const [account, setAccount] = useState<string>("");
 
   const connectWallet = async () => {
