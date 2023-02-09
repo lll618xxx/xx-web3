@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { ethers } from "ethers";
 import './App.scss'
 
+declare var window: any
+
 function App() {
   const [walletProvider, setWalletProvider] = useState<any>(null);
   const [networkName, setNetworkName] = useState<string>("-");
@@ -10,9 +12,9 @@ function App() {
 
   const connectWallet = async () => {
     try {
-      if (!ethereum) return alert("Please install MetaMask.");
+      if (!window.ethereum) return alert("Please install MetaMask.");
 
-      // const accounts = await ethereum.request({ method: "eth_requestAccounts", });
+      // const accounts = await window.ethereum.request({ method: "eth_requestAccounts", });
       // console.log(accounts, 'accounts')
       // // setCurrentAccount(accounts[0]);
       // // window.location.reload();
@@ -26,8 +28,8 @@ function App() {
 
   const checkIfWalletIsConnect = async () => {
     try {
-      if (!ethereum) return alert("Please install MetaMask.");
-      // const accounts = await ethereum.request({ method: "eth_accounts" });
+      if (!window.ethereum) return alert("Please install MetaMask.");
+      // const accounts = await window.ethereum.request({ method: "eth_accounts" });
       const accounts = await walletProvider.send("eth_accounts", []);
 
       if (accounts.length) {
@@ -41,7 +43,7 @@ function App() {
     }
   };
 
-  const getAccountMsg = async (curAccount) => {
+  const getAccountMsg = async (curAccount:string) => {
     const network = await walletProvider.getNetwork();
     const balance = await walletProvider.getBalance(curAccount || account);
     setNetworkName(network.name);
