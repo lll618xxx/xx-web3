@@ -6,8 +6,8 @@ declare var window: any
 
 function App() {
   const [walletProvider, setWalletProvider] = useState<any>(null);
-  const [networkName, setNetworkName] = useState<string>("-");
-  const [balance, setBalance] = useState<string>("-");
+  const [networkName, setNetworkName] = useState<string>("");
+  const [balance, setBalance] = useState<number>(0);
   const [account, setAccount] = useState<string>("");
 
   const connectWallet = async () => {
@@ -67,12 +67,12 @@ function App() {
   }, [walletProvider]);
 
   return (
-    <div className="app">
-      {!account && <button className="connet-btn" onClick={connectWallet}>Connet Wallet</button>}
-
+    <div className="app flex-center">
       <div className='card'>
-        <div>networkName: {networkName}</div>
-        <div>balance: {balance}</div>
+        <div className="card-account">account: <span className="card-value">{account}</span></div>
+        <div>networkName: <span className="card-value">{networkName}</span></div>
+        <div>balance: <span className="card-value">{!Number(balance) ||Number(balance).toFixed(4)}</span></div>
+        {!account && <button className="connet-btn" onClick={connectWallet}>Connet Wallet</button>}
       </div>
     </div>
   )

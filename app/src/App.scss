@@ -1,18 +1,33 @@
-:root {
-   color-scheme: light;
-    --xx-button-text-color: #ffffff;
-    --xx-button-bg-color: #409EFF;
-    --xx-border-radius-base: 50;
+.app {
+    margin-top: 30px;
 }
 
-.app {
-   
+.card {
+    position: relative;
+    min-width: 480px;
+    display: inline-block;
+    background-color: #fff;
+    padding: 16px 10px;
+    border-radius: 12px;
+    box-shadow: 2px 2px 1px 1px #e8e8e8;
+    font-weight: bold;
+    line-height: 26px;
+
+    &-account {
+        border-bottom: 1px solid #e8e8e8;
+        margin-bottom: 6px;
+    }
+
+    &-value {
+        color: var(--xx-desc-text-color);
+        font-weight: normal;
+    }
 }
 
 .connet-btn {
-    display: block;
-    line-height: 1;
-    height: 32px;
+    position: absolute;
+    bottom: 14px;
+    right: 10px;
     cursor: pointer;
     color: var(--xx-button-text-color);
     text-align: center;
@@ -24,6 +39,6 @@
     -webkit-appearance: none;
     background-color: var(--xx-button-bg-color);
     border: none;
-    padding: 8px 15px;
-    font-size: var(--el-font-size-base);
+    padding: 6px 4px;
+    font-size: 12px;
 }

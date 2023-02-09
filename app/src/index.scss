@@ -1,1 +1,37 @@
 @import '@/styles/reset.css';
+
+:root {
+    --xx-button-text-color: #ffffff;
+    --xx-button-bg-color: #409EFF;
+
+    --xx-desc-text-color: #3c3c3c;
+}
+
+html, body {
+    background-color: #F8F8F8;
+}
+
+/*每个页面公共css */
+.flex {
+    display: flex;
+    &-column {
+        display: flex;
+        flex-direction: column;
+    }
+    // 主轴居中
+    &-jc-center {
+        display: flex;
+        justify-content: center;
+    }
+    // 侧轴居中
+    &-ai-center {
+        display: flex;
+        align-items: center;
+    }
+    // 主轴&侧轴居中
+    &-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
