@@ -24,6 +24,43 @@
     }
 }
 
+.trade {
+    margin-top: 30px;
+
+    input {
+        border: none;
+        background-color: #f8f8f8;
+        height: 30px;
+        margin: 4px 0;
+        padding-left: 10px;
+        border: 1px solid transparent;
+
+        &:focus {
+            border: 1px solid #AEAEFA;
+            outline:none;
+        }
+    }
+    
+    &-send {
+        margin: 20px auto 0;
+        width: 260px;
+        height: 36px;
+        background-color: var(--xx-button-bg-color);
+        color: var(--xx-button-text-color);
+        cursor: pointer;
+        outline: none;
+        border: none;
+        border-radius: 50px;
+        font-size: 20px;
+        font-weight: bold;
+
+        &-disabled {
+            opacity: 0.5;
+            cursor: not-allowed
+        }
+    }
+}
+
 .connet-btn {
     position: absolute;
     bottom: 14px;
@@ -39,6 +76,6 @@
     -webkit-appearance: none;
     background-color: var(--xx-button-bg-color);
     border: none;
-    padding: 6px 4px;
-    font-size: 12px;
+    padding: 8px 4px;
+    font-size: 14px;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ethers } from "ethers";
 import './App.scss'
 
@@ -9,6 +9,19 @@ function App() {
   const [networkName, setNetworkName] = useState<string>("");
   const [balance, setBalance] = useState<string>();
   const [account, setAccount] = useState<string>("");
+  const [formData, setFormData] = useState({ addressTo: "", amount: "", keyword: "", message: "" });
+
+  const sendBtnStaus = useMemo(() => {
+    const { addressTo, amount, keyword, message } = formData;
+    return !!addressTo && !!amount && !!keyword && !!message 
+  }, [formData])
+
+  const traceList = [
+    {name: "addressTo", placeholder: "Address To", type: "text"},
+    {name: "amount", placeholder: "Amount (ETH)", type: "text"},
+    {name: "keyword", placeholder: "Keyword", type: "text"},
+    {name: "message", placeholder: "Enter Message", type: "text"},
+  ]
 
   const connectWallet = async () => {
     try {
@@ -49,6 +62,34 @@ function App() {
     setNetworkName(network.name);
     setBalance(ethers.utils.formatEther(balance));
   }
+
+   const handleChange = (e, name) => {
+    setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
+  };
+
+  const handleSend = async (e) => {
+    const { addressTo, amount, keyword, message } = formData;
+
+    e.preventDefault();
+
+    if (!addressTo || !amount || !keyword || !message) return;
+
+    try {
+      const value = ethers.utils.parseEther(amount);
+      const signer = walletProvider.getSigner();
+
+      const tx = {
+        to: addressTo,
+        value,
+      };
+
+      const receipt = await signer.sendTransaction(tx);
+      await receipt.wait();
+      console.log("successfully transferred")
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
   useEffect(() => {
     if (!window.ethereum) {
@@ -67,12 +108,28 @@ function App() {
   }, [walletProvider]);
 
   return (
-    <div className="app flex-center">
+    <div className="app flex-column flex-center">
       <div className='card'>
         <div className="card-account">account: <span className="card-value">{account}</span></div>
         <div>networkName: <span className="card-value">{networkName}</span></div>
         <div>balance: <span className="card-value">{!Number(balance) ||Number(balance).toFixed(4)}</span></div>
         {!account && <button className="connet-btn" onClick={connectWallet}>Connet Wallet</button>}
+      </div>
+
+       <div className='card trade flex-column'>
+         {
+          traceList.map((item, index) => {
+            return (
+              <input
+                key={index}
+                placeholder={item.placeholder}
+                type={item.type}
+                onChange={(e) => handleChange(e, item.name)}
+              />
+            )
+          })
+         }
+         <button className={`trade-send ${!sendBtnStaus && "trade-send-disabled"}`} onClick={handleSend}>Send</button>
       </div>
     </div>
   )
