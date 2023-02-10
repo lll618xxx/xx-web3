@@ -63,11 +63,11 @@ function App() {
     setBalance(ethers.utils.formatEther(balance));
   }
 
-   const handleChange = (e, name) => {
+   const handleChange = (e:any, name:any) => {
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
 
-  const handleSend = async (e) => {
+  const handleSend = async (e:any) => {
     const { addressTo, amount, keyword, message } = formData;
 
     e.preventDefault();
