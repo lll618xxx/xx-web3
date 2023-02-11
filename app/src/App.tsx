@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ethers } from "ethers";
 import './App.scss'
+import Loading from './components/Loading';
 
 declare var window: any
 
@@ -10,11 +11,12 @@ function App() {
   const [balance, setBalance] = useState<string>();
   const [account, setAccount] = useState<string>("");
   const [formData, setFormData] = useState({ addressTo: "", amount: "", keyword: "", message: "" });
+  const [tradeIsLoading, setTradeIsLoading] = useState<boolean>(false);
 
   const sendBtnStaus = useMemo(() => {
     const { addressTo, amount, keyword, message } = formData;
-    return !!addressTo && !!amount && !!keyword && !!message 
-  }, [formData])
+    return account && !tradeIsLoading && !!addressTo && !!amount && !!keyword && !!message 
+  }, [formData, tradeIsLoading, account])
 
   const traceList = [
     {name: "addressTo", placeholder: "Address To", type: "text"},
@@ -72,9 +74,10 @@ function App() {
 
     e.preventDefault();
 
-    if (!addressTo || !amount || !keyword || !message) return;
+    if (!sendBtnStaus) return;
 
     try {
+      setTradeIsLoading(true)
       const value = ethers.utils.parseEther(amount);
       const signer = walletProvider.getSigner();
 
@@ -85,8 +88,10 @@ function App() {
 
       const receipt = await signer.sendTransaction(tx);
       await receipt.wait();
-      console.log("successfully transferred")
+      setTradeIsLoading(false)
+      getAccountMsg()
     } catch (error) {
+      setTradeIsLoading(false)
       console.log(error)
     }
   }
@@ -121,6 +126,7 @@ function App() {
           traceList.map((item, index) => {
             return (
               <input
+                disabled={tradeIsLoading}
                 key={index}
                 placeholder={item.placeholder}
                 type={item.type}
@@ -129,7 +135,12 @@ function App() {
             )
           })
          }
-         <button className={`trade-send ${!sendBtnStaus && "trade-send-disabled"}`} onClick={handleSend}>Send</button>
+         <button className={`trade-send ${!sendBtnStaus && "trade-send-disabled"}`} onClick={handleSend}>
+            Send
+          </button>
+          {tradeIsLoading && <Loading 
+            isCenter={true} 
+          />}
       </div>
     </div>
   )
