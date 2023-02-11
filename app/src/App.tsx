@@ -89,7 +89,7 @@ function App() {
       const receipt = await signer.sendTransaction(tx);
       await receipt.wait();
       setTradeIsLoading(false)
-      getAccountMsg()
+      getAccountMsg('')
     } catch (error) {
       setTradeIsLoading(false)
       console.log(error)

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import './index.scss'
 
-function Loading(props) {
+function Loading(props:any) {
   const cls = useMemo(() => {
     let styleClass = props.isCenter ? 'lds-spinner-center' : ''
     return styleClass
