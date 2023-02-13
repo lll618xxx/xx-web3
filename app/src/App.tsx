@@ -11,7 +11,7 @@ function App() {
   const [networkName, setNetworkName] = useState<string>("");
   const [balance, setBalance] = useState<string>();
   const [account, setAccount] = useState<string>("");
-  const [formData, setFormData] = useState({ addressTo: "", amount: "", keyword: "", message: "" });
+  const [formData, setFormData] = useState({ addressTo: "", amount: ""});
   const [tradeIsLoading, setTradeIsLoading] = useState<boolean>(false);
   const [popupShow, setPopupShow] = useState<boolean>(false);
   const [popupText, setpopupText] = useState<string>("");
@@ -24,8 +24,8 @@ function App() {
   const traceList = [
     {name: "addressTo", placeholder: "Address To", type: "text"},
     {name: "amount", placeholder: "Amount (ETH)", type: "text"},
-    {name: "keyword", placeholder: "Keyword", type: "text"},
-    {name: "message", placeholder: "Enter Message", type: "text"},
+    // {name: "keyword", placeholder: "Keyword", type: "text"},
+    // {name: "message", placeholder: "Enter Message", type: "text"},
   ]
 
   const connectWallet = async () => {
@@ -60,6 +60,7 @@ function App() {
       } else {
         console.log("No accounts found");
       }
+
     } catch (error) {
       console.log(error);
     }
@@ -106,6 +107,7 @@ function App() {
       setTradeIsLoading(false)
       getAccountMsg('')
     } catch (error) {
+      console.log(error)
       setTradeIsLoading(false)
       setpopupText(`交易失败，${JSON.stringify(error)}`)
       setPopupShow(true)
@@ -132,7 +134,7 @@ function App() {
     <div className="app flex-column flex-center">
       <div className='card'>
         <div className="card-account">account: <span className="card-value">{account}</span></div>
-        <div>networkName: <span className="card-value">{networkName}</span></div>
+        <div>network: <span className="card-value">{networkName}</span></div>
         <div>balance: <span className="card-value">{!Number(balance) ||Number(balance).toFixed(4)}</span></div>
         {!account && <button className="connet-btn" onClick={connectWallet}>Connet Wallet</button>}
       </div>
