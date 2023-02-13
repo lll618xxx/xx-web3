@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { ethers } from "ethers";
 import './App.scss'
 import Loading from './components/Loading';
+import Toast from './components/Toast';
 
 declare var window: any
 
@@ -12,6 +13,8 @@ function App() {
   const [account, setAccount] = useState<string>("");
   const [formData, setFormData] = useState({ addressTo: "", amount: "", keyword: "", message: "" });
   const [tradeIsLoading, setTradeIsLoading] = useState<boolean>(false);
+  const [popupShow, setPopupShow] = useState<boolean>(false);
+  const [popupText, setpopupText] = useState<string>("");
 
   const sendBtnStaus = useMemo(() => {
     const { addressTo, amount, keyword, message } = formData;
@@ -74,6 +77,12 @@ function App() {
 
     e.preventDefault();
 
+    if (!account) {
+      setpopupText('请先连接钱包')
+      setPopupShow(true)
+      return
+    }
+
     if (!sendBtnStaus) return;
 
     try {
@@ -88,11 +97,14 @@ function App() {
 
       const receipt = await signer.sendTransaction(tx);
       await receipt.wait();
+      setpopupText('交易成功')
+      setPopupShow(true)
       setTradeIsLoading(false)
       getAccountMsg('')
     } catch (error) {
       setTradeIsLoading(false)
-      console.log(error)
+      setpopupText(`交易失败，${JSON.stringify(error)}`)
+      setPopupShow(true)
     }
   }
   
@@ -142,6 +154,8 @@ function App() {
             isCenter={true} 
           />}
       </div>
+
+      <Toast popupShow={popupShow} popupText={popupText} setPopupShow={setPopupShow}/>
     </div>
   )
 }
