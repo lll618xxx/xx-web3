@@ -30,12 +30,12 @@ function App() {
 
   const connectWallet = async () => {
     try {
-      if (!window.ethereum) return alert("Please install MetaMask.");
+      if (!window.ethereum) {
+        setpopupText('请安装 MetaMask')
+        setPopupShow(true)
+        return
+      }
 
-      // const accounts = await window.ethereum.request({ method: "eth_requestAccounts", });
-      // console.log(accounts, 'accounts')
-      // // setCurrentAccount(accounts[0]);
-      // // window.location.reload();
       const accounts = await walletProvider.send("eth_requestAccounts", []);
       setAccount(accounts[0]);
       getAccountMsg(accounts[0])
@@ -46,8 +46,12 @@ function App() {
 
   const checkIfWalletIsConnect = async () => {
     try {
-      if (!window.ethereum) return alert("Please install MetaMask.");
-      // const accounts = await window.ethereum.request({ method: "eth_accounts" });
+      if (!window.ethereum) {
+        setpopupText('请安装 MetaMask')
+        setPopupShow(true)
+        return
+      }
+    
       const accounts = await walletProvider.send("eth_accounts", []);
 
       if (accounts.length) {
