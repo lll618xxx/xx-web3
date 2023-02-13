@@ -17,15 +17,13 @@ function App() {
   const [popupText, setpopupText] = useState<string>("");
 
   const sendBtnStaus = useMemo(() => {
-    const { addressTo, amount, keyword, message } = formData;
-    return account && !tradeIsLoading && !!addressTo && !!amount && !!keyword && !!message 
+    const { addressTo, amount } = formData;
+    return account && !tradeIsLoading && !!addressTo && !!amount
   }, [formData, tradeIsLoading, account])
 
   const traceList = [
     {name: "addressTo", placeholder: "Address To", type: "text"},
     {name: "amount", placeholder: "Amount (ETH)", type: "text"},
-    // {name: "keyword", placeholder: "Keyword", type: "text"},
-    // {name: "message", placeholder: "Enter Message", type: "text"},
   ]
 
   const connectWallet = async () => {
@@ -78,7 +76,7 @@ function App() {
   };
 
   const handleSend = async (e:any) => {
-    const { addressTo, amount, keyword, message } = formData;
+    const { addressTo, amount, } = formData;
 
     e.preventDefault();
 
