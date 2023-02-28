@@ -17,7 +17,7 @@ function App() {
   const [tradeIsLoading, setTradeIsLoading] = useState<boolean>(false);
   const [popupShow, setPopupShow] = useState<boolean>(false);
   const [popupText, setpopupText] = useState<string>("");
-  const [transactionsList, setTransactionsList] = useState<Array>([]);
+  const [transactionsList, setTransactionsList] =useState<Array<any>>([]);
 
   const sendBtnStaus = useMemo(() => {
     const { addressTo, amount } = formData;
@@ -68,7 +68,7 @@ function App() {
   };
 
   // 获取账户信息
-  const getAccountMsg = async (curAccount:string) => {
+  const getAccountMsg = async (curAccount?:string) => {
     const network = await walletProvider.getNetwork();
     const balance = await walletProvider.getBalance(curAccount || account);
     setNetworkName(network.name);
@@ -80,12 +80,9 @@ function App() {
   };
 
   // 获取交易历史
-  const getTradeHistory = (curAccount:string, curWorkName:string) => {
-    // const mainnetProvider = new ethers.providers.EtherscanProvider(curWorkName || networkName, import.meta.env.ETHERSSCAN_API_KEY as string, { fetch });
-
-    // const address = account; // 要查询的地址
-    etherscanProvider.getHistory(account).then((transactions) => {
-      transactions.sort((a, b) => b.timestamp - a.timestamp)
+  const getTradeHistory = () => {
+    etherscanProvider.getHistory(account).then((transactions:Array<any>) => {
+      transactions.sort((a:any, b:any) => b.timestamp - a.timestamp)
       setTransactionsList(transactions)
     });
   }
@@ -155,7 +152,7 @@ function App() {
 
   useEffect(() => {
     if (networkName) {
-      setEtherscanProvider(new ethers.providers.EtherscanProvider(networkName, import.meta.env.ETHERSSCAN_API_KEY as string, { fetch }));
+      setEtherscanProvider(new ethers.providers.EtherscanProvider(networkName, import.meta.env.ETHERSSCAN_API_KEY as string));
     }
   }, [networkName]);
 
@@ -201,7 +198,7 @@ function App() {
           <div className="history-title">最近{tradeHistoryLimit}条交易记录</div>
           <div className="history-main flex">
             {
-              transactionsList.slice(0, tradeHistoryLimit).map((item, index) => {
+              transactionsList.slice(0, tradeHistoryLimit).map((item:any, index:number) => {
                 return (
                   <div className="history-item" key={index}>
                     <div className="history-head">To：{item.to.slice(0, 6)}......{item.to.slice(item.to.length-6, item.to.length)}</div>
