@@ -26,7 +26,7 @@ npm run dev
 
 #### 查询交易记录
 
-在 <code>.env</code> 文件中，填写ETHERSSCAN_API_KEY
+在 app目录下，<code>.env</code> 文件中，填写ETHERSSCAN_API_KEY
 
 
 
