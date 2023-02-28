@@ -16,5 +16,9 @@ cd app & npm i
 npm run dev
 ```
 
+#### 查询交易记录
+
+在 <code>.env</code> 文件中，填写ETHERSSCAN_API_KEY
+
 
 
