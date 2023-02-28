@@ -29,8 +29,7 @@ function App() {
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        setpopupText('请安装 MetaMask')
-        setPopupShow(true)
+        setPopup('请安装 MetaMask')
         return
       }
 
@@ -45,8 +44,7 @@ function App() {
   const checkIfWalletIsConnect = async () => {
     try {
       if (!window.ethereum) {
-        setpopupText('请安装 MetaMask')
-        setPopupShow(true)
+        setPopup('请安装 MetaMask')
         return
       }
     
@@ -55,8 +53,6 @@ function App() {
       if (accounts.length) {
         setAccount(accounts[0]);
         getAccountMsg(accounts[0])
-      } else {
-        console.log("No accounts found");
       }
 
     } catch (error) {
@@ -81,8 +77,7 @@ function App() {
     e.preventDefault();
 
     if (!account) {
-      setpopupText('请先连接钱包')
-      setPopupShow(true)
+      setPopup('请先连接钱包')
       return
     }
 
@@ -100,16 +95,18 @@ function App() {
 
       const receipt = await signer.sendTransaction(tx);
       await receipt.wait();
-      setpopupText('交易成功')
-      setPopupShow(true)
       setTradeIsLoading(false)
+      setPopup('交易成功')
       getAccountMsg('')
     } catch (error) {
-      console.log(error)
       setTradeIsLoading(false)
-      setpopupText(`交易失败，${JSON.stringify(error)}`)
-      setPopupShow(true)
+      setPopup(`交易失败，${JSON.stringify(error)}`)
     }
+  }
+
+  const setPopup = (popupText:string, popupShow:boolean=true) => {
+    setpopupText(popupText)
+    setPopupShow(popupShow)
   }
   
   useEffect(() => {
@@ -122,10 +119,10 @@ function App() {
 
   }, []);
 
-   useEffect(() => {
-     if (walletProvider) {
-        checkIfWalletIsConnect()
-     }
+useEffect(() => {
+    if (walletProvider) {
+      checkIfWalletIsConnect()
+    }
   }, [walletProvider]);
 
   return (
